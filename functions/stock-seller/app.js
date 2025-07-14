@@ -20,21 +20,35 @@ function getRandomInt(max) {
  * 
  */
 exports.lambdaHandler = async (event, context) => {
-    // Get the price of the stock provided as input
-    const body = JSON.parse(event.body)
-    const stock_price = body.stock_price
+    try {
+        console.log('Event:', JSON.stringify(event, null, 2));
+        
+        // Get the price of the stock provided as input
+        const body = typeof event.body === 'string' ? JSON.parse(event.body) : event.body;
+        const stock_price = body.stock_price;
 
-    var date = new Date();
-    // Mocked result of a stock selling transaction
-    let transaction_result = {
-        'id': crypto.randomBytes(16).toString("hex"), // Unique ID for the transaction
-        'price': stock_price.toString(), // Price of each share
-        'type': "sell", // Type of transaction (buy/ sell)
-        'qty': getRandomInt(10).toString(),  // Number of shares bought / sold (We are mocking this as a random integer between 1 and 10)
-        'timestamp': date.toISOString(),  // Timestamp for when the transaction was completed
+        const date = new Date();
+        // Mocked result of a stock selling transaction
+        const transaction_result = {
+            'id': crypto.randomBytes(16).toString("hex"), // Unique ID for the transaction
+            'price': stock_price.toString(), // Price of each share
+            'type': "sell", // Type of transaction (buy/ sell)
+            'qty': getRandomInt(10).toString(),  // Number of shares bought / sold (We are mocking this as a random integer between 1 and 10)
+            'timestamp': date.toISOString(),  // Timestamp for when the transaction was completed
+        };
+        
+        return { 
+            statusCode: 200,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(transaction_result)
+        };
+    } catch (error) {
+        console.error('Error:', error);
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: 'Internal server error' })
+        };
     }
-    return { 
-        statusCode: 200,
-        body:JSON.stringify(transaction_result ),
-        }
 };

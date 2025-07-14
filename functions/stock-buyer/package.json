@@ -1,11 +1,14 @@
 {
-  "name": "stock_checker",
+  "name": "stock_buyer",
   "version": "1.0.0",
-  "description": "Mock stock checker for NodeJS",
+  "description": "Mock stock buyer for NodeJS",
   "main": "app.js",
   "repository": "TODO",
   "author": "SAM CLI",
   "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "dependencies": {},
   "scripts": {
     "test": "mocha tests/unit/"

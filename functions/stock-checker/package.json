@@ -6,6 +6,9 @@
   "repository": "TODO",
   "author": "SAM CLI",
   "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "dependencies": {},
   "scripts": {
     "test": "mocha tests/unit/"

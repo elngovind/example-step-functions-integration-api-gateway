@@ -18,10 +18,24 @@ function getRandomInt(max) {
  * 
  */
 exports.lambdaHandler = async (event, context) => {
-    // Check current price of the stock
-    stock_price = getRandomInt(100)  // Current stock price is mocked as a random integer between 0 and 100
-       return { 
-        statusCode: 200,
-        body:JSON.stringify({"stock_price": stock_price }),
-        }
+    try {
+        console.log('Event:', JSON.stringify(event, null, 2));
+        
+        // Check current price of the stock
+        const stock_price = getRandomInt(100);  // Current stock price is mocked as a random integer between 0 and 100
+        
+        return { 
+            statusCode: 200,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({"stock_price": stock_price})
+        };
+    } catch (error) {
+        console.error('Error:', error);
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: 'Internal server error' })
+        };
+    }
 };
