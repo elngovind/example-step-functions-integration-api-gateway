@@ -27,10 +27,24 @@ function getRandomInt(max) {
 }
 
 exports.lambdaHandler = async (event, context) => {
-    stock_price = getRandomInt(100)
-    return { 
-        statusCode: 200,
-        body: JSON.stringify({"stock_price": stock_price }),
+    try {
+        console.log('Event:', JSON.stringify(event, null, 2));
+        
+        const stock_price = getRandomInt(100);
+        
+        return { 
+            statusCode: 200,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({"stock_price": stock_price})
+        };
+    } catch (error) {
+        console.error('Error:', error);
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: 'Internal server error' })
+        };
     }
 };
 ```
@@ -48,21 +62,34 @@ function getRandomInt(max) {
 }
 
 exports.lambdaHandler = async (event, context) => {
-    const body = JSON.parse(event.body)
-    const stock_price = body.stock_price
-    var date = new Date();
-    
-    const transaction_result = {
-        'id': crypto.randomBytes(16).toString("hex"),
-        'price': stock_price.toString(),
-        'type': "buy",
-        'qty': getRandomInt(10).toString(),
-        'timestamp': date.toISOString(),
-    }
-    
-    return { 
-        statusCode: 200,
-        body: JSON.stringify(transaction_result),
+    try {
+        console.log('Event:', JSON.stringify(event, null, 2));
+        
+        const body = typeof event.body === 'string' ? JSON.parse(event.body) : event.body;
+        const stock_price = body.stock_price;
+
+        const date = new Date();
+        const transaction_result = {
+            'id': crypto.randomBytes(16).toString("hex"),
+            'price': stock_price.toString(),
+            'type': "buy",
+            'qty': getRandomInt(10).toString(),
+            'timestamp': date.toISOString(),
+        };
+        
+        return { 
+            statusCode: 200,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(transaction_result)
+        };
+    } catch (error) {
+        console.error('Error:', error);
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: 'Internal server error' })
+        };
     }
 };
 ```
@@ -80,21 +107,34 @@ function getRandomInt(max) {
 }
 
 exports.lambdaHandler = async (event, context) => {
-    const body = JSON.parse(event.body)
-    const stock_price = body.stock_price
-    var date = new Date();
-    
-    let transaction_result = {
-        'id': crypto.randomBytes(16).toString("hex"),
-        'price': stock_price.toString(),
-        'type': "sell",
-        'qty': getRandomInt(10).toString(),
-        'timestamp': date.toISOString(),
-    }
-    
-    return { 
-        statusCode: 200,
-        body: JSON.stringify(transaction_result),
+    try {
+        console.log('Event:', JSON.stringify(event, null, 2));
+        
+        const body = typeof event.body === 'string' ? JSON.parse(event.body) : event.body;
+        const stock_price = body.stock_price;
+
+        const date = new Date();
+        const transaction_result = {
+            'id': crypto.randomBytes(16).toString("hex"),
+            'price': stock_price.toString(),
+            'type': "sell",
+            'qty': getRandomInt(10).toString(),
+            'timestamp': date.toISOString(),
+        };
+        
+        return { 
+            statusCode: 200,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(transaction_result)
+        };
+    } catch (error) {
+        console.error('Error:', error);
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: 'Internal server error' })
+        };
     }
 };
 ```
